@@ -28,9 +28,11 @@ Example:
   - Translator ids range from 1 to 10 as well as B (Bokmål).
 - The `text` field represents the detokenized prompt string.
 - The `intent` field contains the name of the intent associated with the prompt.
+  - Some intent labels contain `/` but others don't.
 - The `dialect` field contains the dialect label (one uppercase character).
-  - There are four dialect labels: 'V, N, T, B` (see Table below for details).
+  - There are four dialect labels: `V, N, T, B` (see Table below for details).
 - The numbered lines contain the tokens of the prompt, together with the intent label and the slot annotations.
+  - Some slot labels contain `/` but others don't (e.g. `weather/attribute` vs. `datetime`).
 
 The correspondences between dialect areas and translator ids are as follows:
 
