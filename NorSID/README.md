@@ -38,13 +38,13 @@ The correspondences between dialect areas and translator ids are as follows:
 
 | Translator ID  | Origin | Dialect area |
 | --- | ----------- | ------------- |
-| 1  | Trondheim    | `T` (Trøndersk)       |
-| 2  | Trondheim    | `T` (Trøndersk)       |
-| 3  | Tromsø       | `N` (North Norwegian) |
-| 4  | Haugesund    | `V` (West Norwegian)  |
+| 1  | Tromsø       | `N` (North Norwegian) |
+| 2  | Tromsø area  | `N` (North Norwegian) |
+| 3  | Trondheim    | `T` (Trøndersk)       |
+| 4  | Trondheim    | `T` (Trøndersk)       |
 | 5  | Sunndal      | `T` (Trøndersk)       |
-| 6  | Tromsø area  | `N` (North Norwegian) |
-| 7  | Ålesund area | `V` (West Norwegian)  |
+| 6  | Ålesund area | `V` (West Norwegian)  |
+| 7  | Haugesund    | `V` (West Norwegian)  |
 | 8  | Stavanger    | `V` (West Norwegian)  |
 | 9  | Stavanger    | `V` (West Norwegian)  |
 | 10 | Bergen       | `V` (West Norwegian)  |
