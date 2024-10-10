@@ -2,6 +2,13 @@
 
 Shared task website: https://sites.google.com/view/vardial-2025/shared-tasks
 
+## Training data
+
+All training and development data of the [xSID-0.6 dataset](https://github.com/mainlp/xsid/tree/main/data/xSID-0.6) may be used for training.
+
+In addition, we provide a machine-translated version of the English training corpus to Norwegian, with projected annotations: `nb.projectedTrain.conll.fixed`. The quality of both the translation and the annotation projection is relatively poor. Participants wishing to improve the annotation projection may find it helpful to use the existing [xSID code](https://github.com/mainlp/xsid/tree/main/scripts).
+
+
 ## Development data
 
 The development data can be found in `norsid_dev.conll`.
