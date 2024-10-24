@@ -7475,8 +7475,8 @@
 1	Gi	RateBook	O
 2	tri	RateBook	B-rating_value
 3	stjerner	RateBook	B-rating_unit
-4	/   RateBook    O
-5   6	RateBook	B-best_rating
+4	/	RateBook	O
+5	6	RateBook	B-best_rating
 6	te	RateBook	O
 7	My	RateBook	B-object_name
 8	Sister	RateBook	I-object_name
@@ -8856,7 +8856,7 @@
 4	se	SearchCreativeWork	O
 5	sagaen	SearchCreativeWork	B-object_type
 6	12	SearchCreativeWork	B-object_name
-7	Soulful	SearchCreativeWork  I-object_name
+7	Soulful	SearchCreativeWork	I-object_name
 8	Nights	SearchCreativeWork	I-object_name
 9	of	SearchCreativeWork	I-object_name
 10	Christmas	SearchCreativeWork	I-object_name
@@ -10977,7 +10977,7 @@
 8	.	reminder/cancel_reminder	O
 
 # id = 203/9
-# text = Finn meg et bord  for 8 ein plass i Hollenberg om ni uker
+# text = Finn meg et bord for 8 ein plass i Hollenberg om ni uker
 # intent = BookRestaurant
 # dialect = V
 1	Finn	BookRestaurant	O
@@ -11416,7 +11416,7 @@
 5	?	weather/find	O
 
 # id = 258/9
-# text = legg te Do You Love Me  i acoustic soul spillelistå mi
+# text = legg te Do You Love Me i acoustic soul spillelistå mi
 # intent = AddToPlaylist
 # dialect = V
 1	legg	AddToPlaylist	O
@@ -16293,7 +16293,7 @@
 13	uka	BookRestaurant	I-datetime
 
 # id = 216/10
-# text = Vær så snill og si meg værmeldingen  for Guinea-Bissau
+# text = Vær så snill og si meg værmeldingen for Guinea-Bissau
 # intent = weather/find
 # dialect = V
 1	Vær	weather/find	O
@@ -17157,7 +17157,7 @@
 2	av	PlayMusic	O
 3	topp	PlayMusic	B-sort
 4	20	PlayMusic	I-sort
-5	sangene	PlayMusic	
+5	sangene	PlayMusic	O
 6	av	PlayMusic	O
 7	The	PlayMusic	B-artist
 8	Kleptones	PlayMusic	I-artist
@@ -22061,7 +22061,7 @@
 19	.	BookRestaurant	O
 
 # id = 182/10
-# text = spill  Fereydoun Farrokhzad beste låt
+# text = spill Fereydoun Farrokhzad beste låt
 # intent = PlayMusic
 # dialect = V
 1	spill	PlayMusic	O
