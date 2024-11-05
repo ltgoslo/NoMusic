@@ -59,4 +59,4 @@ The correspondences between dialect areas and translator ids are as follows:
 
 ## Test data
 
-The test set is expected to be released on 4 November 2024. The test set will only contain the tokenized and untokenized prompt strings.
+The test set is expected to be released on 5 November 2024. The test set will only contain the tokenized and untokenized prompt strings.
