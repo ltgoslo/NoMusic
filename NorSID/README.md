@@ -59,4 +59,25 @@ The correspondences between dialect areas and translator ids are as follows:
 
 ## Test data
 
-The test set is expected to be released on 5 November 2024. The test set will only contain the tokenized and untokenized prompt strings.
+The test set has been released: `/norsid_test_nolabels.conll`. It contains the untokenized and tokenized prompt strings as well as placeholders for the `intent` and `dialect` labels:
+
+```
+# text = Ka blir temperaturen i dag?
+# intent = 
+# dialect = 
+1	Ka
+2	blir
+3	temperaturen
+4	i
+5	dag
+6	?
+```
+
+## Evaluation
+
+You can find the evaluation scripts in the `scripts` directory. The official metrics are:
+- `slot f1` for the slots
+- `intent accuracy` for the intents
+- `weighted f1-score` for the dialects.
+
+If you only participate in the sentence-level tasks (intent detection and/or dialect identification), you can submit a simpler files containing only lines starting with `#` and blank lines (see example `norsid_dev_random.conll`).
