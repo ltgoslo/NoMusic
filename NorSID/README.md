@@ -80,4 +80,4 @@ You can find the evaluation scripts in the `scripts` directory. The official met
 - `intent accuracy` for the intents
 - `weighted f1-score` for the dialects.
 
-If you only participate in the sentence-level tasks (intent detection and/or dialect identification), you can submit a simpler files containing only lines starting with `#` and blank lines (see example `norsid_dev_random.conll`).
+If you only participate in the sentence-level tasks (intent detection and/or dialect identification), you can submit a simpler file containing only lines starting with `#` and blank lines (see example `norsid_dev_random.conll`).
