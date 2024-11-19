@@ -79,6 +79,7 @@ def evaluate(goldSets, predSets):
     print("recall    ", "  ".join(["{:.4f}".format(rec[x]) for x in labels]))
     print("f1-score  ", "  ".join(["{:.4f}".format(f1[x]) for x in labels]))
     print("jaccard       {:.4f}".format(jaccard))
+    print()
 
 
 if __name__ == '__main__':
@@ -89,4 +90,5 @@ if __name__ == '__main__':
     goldData = makeSets(goldSentences, goldLabels)
     predSentences, predLabels = readData(sys.argv[2])
     predData = makeSets(predSentences, predLabels)
+    print(sys.argv[2])
     evaluate(goldData, predData)

@@ -81,3 +81,10 @@ You can find the evaluation scripts in the `scripts` directory. The official met
 - `weighted f1-score` for the dialects.
 
 If you only participate in the sentence-level tasks (intent detection and/or dialect identification), you can submit a simpler file containing only lines starting with `#` and blank lines (see example `norsid_dev_random.conll`).
+
+
+## Results
+
+The official results of the shared task are provided on a [different page](results.md). The detailed output of the evaluation script is provided in `participants/detailed_results.txt`. We provide the following baselines:
+- For slot and intent detection: `mBERT` fine-tuned on the English xSID training data with the MaChAmp toolkit.
+- For dialect detection: an SVM classifier trained on the NorSID development data using tf-idf-weighted character 1-gram to 4-gram features.

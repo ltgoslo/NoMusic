@@ -177,8 +177,8 @@ if __name__ == '__main__':
         f1_loose[d] = 0.0 if prec_loose[d]+rec_loose[d] == 0.0 else 2 * (prec_loose[d] * rec_loose[d]) / (prec_loose[d] + rec_loose[d])
 
     dialects = sorted(corIntents.keys())
+    print(sys.argv[2])
     print('class:                   ', '       '.join([d for d in dialects]))
-    print()
     print('slot recall:             ', '  '.join([f'{rec[d]:.4f}' for d in dialects]))
     print('slot precision:          ', '  '.join([f'{prec[d]:.4f}' for d in dialects]))
     print('slot f1:                 ', '  '.join([f'{f1[d]:.4f}' for d in dialects]))
