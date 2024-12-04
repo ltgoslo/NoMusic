@@ -10,7 +10,7 @@ python ../scripts/sidEval.py $GOLD hitz/sid/sid1.conll
 python ../scripts/sidEval.py $GOLD hitz/sid/sid2.conll
 python ../scripts/sidEval.py $GOLD hitz/sid/sid3.conll
 
-echo "MaiLAB"
+echo "MaiNLP"
 python ../scripts/sidEval.py $GOLD mailab/mainlp_intents1_mdeberta_siddial_8446.conll
 python ../scripts/sidEval.py $GOLD mailab/mainlp_intents2_mdeberta_topline_swapped.conll
 python ../scripts/sidEval.py $GOLD mailab/mainlp_intents3_mdeberta_sidnor20_5678.conll
