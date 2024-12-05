@@ -1,4 +1,10 @@
 import myutils
+import pprint
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt
+plt.style.use('scripts/rob.mplstyle')
+
 
 dialects = False
 results = {}
@@ -99,58 +105,102 @@ ax.set_ylabel('Metric performance')
 fig.savefig('slots-analysis.pdf', bbox_inches='tight')
 
 
-def read_intents(path):
+def read_gold(path, task):
     labels = []
     for line in open(path):
-        if line.startswith('# intent ='):
+        if line.startswith('# ' + task + ' ='):
             labels.append(line[11:].strip())
-        if line.startswith('# intent: '):
+        if line.startswith('# ' + task + ': '):
             labels.append(line[10:].strip())
     return labels
-print('Most common errors per team (gold-pred)')
-gold_labels = read_intents('norsid_test.conll')
-all_labels = list(sorted(set(gold_labels)))
-err_counts = [0] * len(gold_labels)
-for teamname in results:
-    if teamname == 'Baseline':
-        continue
-    errors = {}
-    print(teamname)
-    scores = [[0] * len(all_labels) for _ in range(len(all_labels))]
-    submissions = results[teamname]['intent']['accuracy:']['all']
-    best_submission = sorted(submissions.items(), key=lambda item: item[1])[-1][0]
-    team_labels = read_intents('participants/' + best_submission)
-    idx = 0
-    for gold, pred in zip(gold_labels, team_labels):
-        if pred in all_labels:
-            scores[all_labels.index(gold)][all_labels.index(pred)] += 1
-            if gold != pred:
-                error = gold.split('/')[-1] + '-' + pred.split('/')[-1]
-                if error not in errors:
-                    errors[error] = 0
-                errors[error] += 1
-                err_counts[idx] += 1
-        idx += 1
-    for item in sorted(errors.items(), key=lambda item: item[1], reverse=True)[:3]:
-        print(item)
-print()
 
-    #import pprint
-    #pprint.pprint(scores)
-#print(err_counts.count(0))
-#print(err_counts.count(1))
-#print(err_counts.count(2))
-#print(err_counts.count(3))
-#print(err_counts.count(4))
-print('Instances classified wrong by every team')
-sent_idx = 0
-test_lines = open('norsid_test.conll').readlines()
-for line_idx, line in enumerate(test_lines):
-    if line.startswith('# text = '):
-        if err_counts[sent_idx] == 4:
-            print(line.strip())
-            print(test_lines[line_idx+1].strip())
-            print()
-        sent_idx += 1
+
+for task, metric in zip(['intent', 'dialect'], ['accuracy:', 'f1-score']):
+    print(task)
+    print('Most common errors per team (gold-pred)')
+    gold_labels = read_gold('norsid_test.conll', task)
+    all_labels = list(sorted(set(gold_labels)))
+    err_counts = [0] * len(gold_labels)
+    dialect_teams = []
+
+    if task == 'dialect':
+        plt.rcParams["axes.grid"] = False
+        figs, axs = plt.subplots(1, 4, figsize=(8,5), dpi=300)
+    for teamname in results:
+        if teamname == 'Baseline' and task == 'intent':
+            continue
+        if task not in results[teamname]:
+            continue
+        errors = {}
+        print(teamname)
+        scores = [[0] * len(all_labels) for _ in range(len(all_labels))]
+        submissions = results[teamname][task][metric]['all']
+        best_submission = sorted(submissions.items(), key=lambda item: item[1])[-1][0]
+        team_labels = read_gold('participants/' + best_submission, task)
+        idx = 0
+        for gold, pred in zip(gold_labels, team_labels):
+            if pred in all_labels:
+                scores[all_labels.index(gold)][all_labels.index(pred)] += 1
+                if gold != pred:
+                    error = gold.split('/')[-1] + '-' + pred.split('/')[-1]
+                    if error not in errors:
+                        errors[error] = 0
+                    errors[error] += 1
+                    err_counts[idx] += 1
+            idx += 1
+
+        for item in sorted(errors.items(), key=lambda item: item[1], reverse=True)[:3]:
+            print(item)
+        if task == 'dialect':
+            ax = axs[len(dialect_teams)]
+
+            dialect_teams.append(teamname)
+            print(scores)
+            ax.set_title(teamname)
+            im = ax.imshow(scores, vmin=0, vmax=1000)
+            plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
+                rotation_mode="anchor")
+            plt.setp(ax.get_yticklabels(), rotation=45, ha="right",
+                rotation_mode="anchor")
+    
+            ax.set_xticks(range(4))
+            ax.set_yticks(range(4))
+            ax.set_xticklabels(all_labels)
+            ax.set_yticklabels(all_labels)
+
+            for i in range(len(scores)):
+                for j in range(len(scores[i])):
+                    text = ax.text(j, i, str(scores[i][j]),
+                        ha="center", va="center", fontsize=7, color='white')
+
+
+            #pprint.pprint(scores)
+        print()
+    #print(err_counts.count(0))
+    #print(err_counts.count(1))
+    #print(err_counts.count(2))
+    #print(err_counts.count(3))
+    #print(err_counts.count(4))
+
+
+    if task == 'intent':
+        print('Instances classified wrong by every team')
+        sent_idx = 0
+        test_lines = open('norsid_test.conll').readlines()
+        for line_idx, line in enumerate(test_lines):
+            if line.startswith('# text = '):
+                if err_counts[sent_idx] == 4:
+                    print(line.strip())
+                    print(test_lines[line_idx+1].strip())
+                    print()
+                sent_idx += 1
+
+    if task == 'dialect':
+        figs.colorbar(im, ax=axs[-1], aspect=5)
+        axs[-1].remove()
+        figs.tight_layout(pad=1.9)
+
+        # Somehow it breaks with pdf
+        figs.savefig('dialect-confusions.png', bbox_inches='tight')
 
 
