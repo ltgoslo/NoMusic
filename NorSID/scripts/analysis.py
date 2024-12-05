@@ -1,4 +1,4 @@
-
+import myutils
 
 dialects = False
 results = {}
@@ -36,7 +36,6 @@ for line in open('participants/detailed_results.txt'):
         task = 'dialect'
         metric = tok[0]
         scores = tok[1:5] + [tok[-1]]
-        print(scores)
 
     if teamname not in results:
         results[teamname] = {}
@@ -79,4 +78,79 @@ for task, metric in zip(['slot', 'intent', 'dialect'], ['f1:', 'accuracy:', 'f1-
         print(' & '.join ([row[0]] + ['{:.2f}'.format(100*x) for x in row[1:]]) + ' \\\\')
     print()
 
+ 
+all_scores = []
+team_names = []
+for teamname in results:
+    submissions = results[teamname]['slot']['f1:']['all']
+    best_submission = sorted(submissions.items(), key=lambda item: item[1])[-1][0]
     
+    teamscores = []
+    for metric in ['f1:', 'precision:', 'recall:', 'unlabeled-f1:', 'loose-f1:']:
+        teamscores.append(results[teamname]['slot'][metric]['all'][best_submission])
+    if set(teamscores) == {0.0}:
+        continue
+
+    all_scores.append(teamscores)
+    team_names.append(teamname)
+
+ax, fig = myutils.makeGraph(all_scores, team_names, ['F1', 'Precision', 'Recall', 'Unlabeled-F1', 'Loose-F1'], loc='lower right')
+ax.set_ylabel('Metric performance')
+fig.savefig('slots-analysis.pdf', bbox_inches='tight')
+
+
+def read_intents(path):
+    labels = []
+    for line in open(path):
+        if line.startswith('# intent ='):
+            labels.append(line[11:].strip())
+        if line.startswith('# intent: '):
+            labels.append(line[10:].strip())
+    return labels
+print('Most common errors per team (gold-pred)')
+gold_labels = read_intents('norsid_test.conll')
+all_labels = list(sorted(set(gold_labels)))
+err_counts = [0] * len(gold_labels)
+for teamname in results:
+    if teamname == 'Baseline':
+        continue
+    errors = {}
+    print(teamname)
+    scores = [[0] * len(all_labels) for _ in range(len(all_labels))]
+    submissions = results[teamname]['intent']['accuracy:']['all']
+    best_submission = sorted(submissions.items(), key=lambda item: item[1])[-1][0]
+    team_labels = read_intents('participants/' + best_submission)
+    idx = 0
+    for gold, pred in zip(gold_labels, team_labels):
+        if pred in all_labels:
+            scores[all_labels.index(gold)][all_labels.index(pred)] += 1
+            if gold != pred:
+                error = gold.split('/')[-1] + '-' + pred.split('/')[-1]
+                if error not in errors:
+                    errors[error] = 0
+                errors[error] += 1
+                err_counts[idx] += 1
+        idx += 1
+    for item in sorted(errors.items(), key=lambda item: item[1], reverse=True)[:3]:
+        print(item)
+print()
+
+    #import pprint
+    #pprint.pprint(scores)
+#print(err_counts.count(0))
+#print(err_counts.count(1))
+#print(err_counts.count(2))
+#print(err_counts.count(3))
+#print(err_counts.count(4))
+print('Instances classified wrong by every team')
+sent_idx = 0
+test_lines = open('norsid_test.conll').readlines()
+for line_idx, line in enumerate(test_lines):
+    if line.startswith('# text = '):
+        if err_counts[sent_idx] == 4:
+            print(line.strip())
+            print(test_lines[line_idx+1].strip())
+            print()
+        sent_idx += 1
+
+
