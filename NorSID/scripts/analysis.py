@@ -184,8 +184,12 @@ for task, metric in zip(['intent', 'dialect'], ['accuracy:', 'f1-score']):
 
             for i in range(len(scores)):
                 for j in range(len(scores[i])):
-                    text = ax.text(j, i, str(scores[i][j]),
-                        ha="center", va="center", fontsize=7, color='white')
+                    if scores[i][j] < 1000:
+                        text = ax.text(j, i, str(scores[i][j]),
+                            ha="center", va="center", fontsize=7, color='white')
+                    else:
+                        text = ax.text(j, i, str(scores[i][j]),
+                            ha="center", va="center", fontsize=7, color='black')
 
 
             #pprint.pprint(scores)
