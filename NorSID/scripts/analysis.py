@@ -114,6 +114,8 @@ ax, fig = myutils.makeGraph(all_scores, team_names, ['F1', 'Precision', 'Recall'
 #ax.set_ylabel('Metric performance')
 fig.savefig('slots-analysis.pdf', bbox_inches='tight')
 
+sys.exit(0)
+
 def read_gold(path, task):
     labels = []
     for line in open(path):

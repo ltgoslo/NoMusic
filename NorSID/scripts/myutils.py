@@ -11,7 +11,7 @@ def makeGraph(data, names1, names2, transpose=False, loc=None):
         data = list(zip(*data))
     fig, ax = plt.subplots(figsize=(8,5), dpi=300)
     colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
-    colors = colors + colors + colors
+    colors = colors[1:] + colors + colors
     dim1 = len(data)
     dim2 = len(data[0])
     bar_width = 1/(dim2+1)
@@ -26,6 +26,8 @@ def makeGraph(data, names1, names2, transpose=False, loc=None):
             else:
                 ax.bar(x, y, bar_width, color = colors[dim2_idx])
                 #plt.text(x, y, y, ha='center')
+    for container in ax.containers:
+        ax.bar_label(container, label_type='center', rotation=90)#, color='white')
 
     ax.set_xticks([x+.5 for x in range(dim1)])
     ax.set_xticklabels([name.replace('.40M', '') for name in names1], rotation=45, ha="right", rotation_mode="anchor")
@@ -34,9 +36,9 @@ def makeGraph(data, names1, names2, transpose=False, loc=None):
     #ax.set_ylim((0,.7))
 
     if loc != None:
-        leg = ax.legend(loc=loc)
+        leg = ax.legend(loc=loc, ncol=2)
     else:
-        leg = ax.legend()
+        leg = ax.legend(ncol=2)
     leg.get_frame().set_linewidth(1.5)
     return ax, fig
 
