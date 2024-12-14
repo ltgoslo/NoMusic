@@ -3,14 +3,15 @@ import pprint
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
-plt.style.use('scripts/rob.mplstyle')
+plt.style.use('rob.mplstyle')
+import sys
 
 
 dialects = False
 results = {}
 teamname = ''
 run_path = ''
-for line in open('participants/detailed_results.txt'):
+for line in open('../participants/detailed_results.txt'):
     if line.startswith('---------------'):
         dialects = True
         continue
@@ -89,6 +90,8 @@ all_scores = []
 team_names = []
 for teamname in results:
     submissions = results[teamname]['slot']['f1:']['all']
+    # remove "extra" submissions from LTG
+    submissions = {x: submissions[x] for x in submissions if "mas" not in x}
     best_submission = sorted(submissions.items(), key=lambda item: item[1])[-1][0]
     
     teamscores = []
@@ -98,12 +101,18 @@ for teamname in results:
         continue
 
     all_scores.append(teamscores)
-    team_names.append(teamname)
+    if teamname == "HITZ":
+        team_names.append("HiTZ 1")
+    elif teamname == "MaiNLP":
+        team_names.append("MaiNLP 2")
+    elif teamname == "LTG":
+        team_names.append("LTG 3")
+    else:
+        team_names.append(teamname)
 
 ax, fig = myutils.makeGraph(all_scores, team_names, ['F1', 'Precision', 'Recall', 'Unlabeled-F1', 'Loose-F1'], loc='lower right')
-ax.set_ylabel('Metric performance')
+#ax.set_ylabel('Metric performance')
 fig.savefig('slots-analysis.pdf', bbox_inches='tight')
-
 
 def read_gold(path, task):
     labels = []
@@ -118,7 +127,7 @@ def read_gold(path, task):
 for task, metric in zip(['intent', 'dialect'], ['accuracy:', 'f1-score']):
     print(task)
     print('Most common errors per team (gold-pred)')
-    gold_labels = read_gold('norsid_test.conll', task)
+    gold_labels = read_gold('../norsid_test.conll', task)
     all_labels = list(sorted(set(gold_labels)))
     err_counts = [0] * len(gold_labels)
     dialect_teams = []
@@ -136,7 +145,7 @@ for task, metric in zip(['intent', 'dialect'], ['accuracy:', 'f1-score']):
         scores = [[0] * len(all_labels) for _ in range(len(all_labels))]
         submissions = results[teamname][task][metric]['all']
         best_submission = sorted(submissions.items(), key=lambda item: item[1])[-1][0]
-        team_labels = read_gold('participants/' + best_submission, task)
+        team_labels = read_gold('../participants/' + best_submission, task)
         idx = 0
         for gold, pred in zip(gold_labels, team_labels):
             if pred in all_labels:
@@ -153,6 +162,11 @@ for task, metric in zip(['intent', 'dialect'], ['accuracy:', 'f1-score']):
             print(item)
         if task == 'dialect':
             ax = axs[len(dialect_teams)]
+
+            if teamname == "HITZ":
+                teamname = "HiTZ 2"
+            elif teamname == "CUFE":
+                teamname = "CUFE 1"
 
             dialect_teams.append(teamname)
             print(scores)
@@ -186,7 +200,7 @@ for task, metric in zip(['intent', 'dialect'], ['accuracy:', 'f1-score']):
     if task == 'intent':
         print('Instances classified wrong by every team')
         sent_idx = 0
-        test_lines = open('norsid_test.conll').readlines()
+        test_lines = open('../norsid_test.conll').readlines()
         for line_idx, line in enumerate(test_lines):
             if line.startswith('# text = '):
                 if err_counts[sent_idx] == 4:

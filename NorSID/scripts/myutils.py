@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-plt.style.use('scripts/rob.mplstyle')
+plt.style.use('rob.mplstyle')
 
 
 def makeGraph(data, names1, names2, transpose=False, loc=None):
@@ -19,10 +19,13 @@ def makeGraph(data, names1, names2, transpose=False, loc=None):
         for dim2_idx in range(dim2):
             x = dim1_idx + bar_width * dim2_idx + bar_width
             y = data[dim1_idx][dim2_idx]
+            print(">>>", "x", x, "y", y, "dim1", dim1_idx, "dim2", dim2_idx)
             if dim1_idx == 0:
                 ax.bar(x, y, bar_width, color = colors[dim2_idx], label = names2[dim2_idx])
+                #plt.text(x, y, y, ha='center')
             else:
                 ax.bar(x, y, bar_width, color = colors[dim2_idx])
+                #plt.text(x, y, y, ha='center')
 
     ax.set_xticks([x+.5 for x in range(dim1)])
     ax.set_xticklabels([name.replace('.40M', '') for name in names1], rotation=45, ha="right", rotation_mode="anchor")
